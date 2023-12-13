@@ -43,13 +43,15 @@
     </ul>
   </nz-sider>
   <nz-layout>
-    <nz-content>
+    <nz-content class="example-boundary">
       <div
-        *ngFor="let textItem of boxes; let i = index"
-        class="drag-drop-box"
         cdkDrag
+        *ngFor="let textItem of boxes; let i = index"
         [cdkDragData]="textItem"
         (cdkDragEnded)="onDragEnd($event)"
+        (click)="startEditing(i)"
+        (mouseover)="onMouseOver(textItem)"
+        (mouseout)="onMouseOut()"
         [style.transform]="
           'translate(' +
           textItem.position.x +
@@ -57,10 +59,9 @@
           textItem.position.y +
           'px)'
         "
-        (mouseover)="onMouseOver(textItem)"
-        (mouseout)="onMouseOut()"
-        (click)="startEditing(i)"
         [ngStyle]="{ 'font-size': textItem.size, color: textItem.color }"
+        style="width: 0"
+        cdkDragBoundary=".example-boundary"
       >
         <ng-container *ngIf="!textItem.size; else elseTemplate">
           <h1
@@ -71,6 +72,7 @@
                 textItem.font === 'underline' ? 'underline' : 'none',
               color: textItem.color ? textItem.color : 'black'
             }"
+            style="position: absolute"
           >
             {{ textItem.text }}
           </h1>

@@ -78,9 +78,8 @@ nz-content {
 
 
 .example-boundary {
-  width: 1000px;
+  width: 960px;
   height: 600px;
-  max-width: 100%;
   border: dotted #f90202 2px;
   background-color: rgb(215, 255, 215);
 }
