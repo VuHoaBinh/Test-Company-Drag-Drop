@@ -22,14 +22,20 @@
       <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a nz-button nzType="primary" (click)="addBox()"> Add Box </a>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="addBox()"
+              style="
+                background-color: rgba(0, 21, 41, 0.08);
+                color: white;
+                border: none;
+              "
+            >
+              Add Text
+            </button>
           </li>
-          <li nz-menu-item nzMatchRouter>
-            <a>Box</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a>Line</a>
-          </li>
+
           <li nz-menu-item nzMatchRouter>
             <a
               *ngIf="editingIndex !== null"
@@ -47,11 +53,17 @@
       <div
         cdkDrag
         *ngFor="let textItem of boxes; let i = index"
+        (cdkDragEnded)="onDragEnd($event, textItem)"
         [cdkDragData]="textItem"
-        (cdkDragEnded)="onDragEnd($event)"
         (click)="startEditing(i)"
         (mouseover)="onMouseOver(textItem)"
         (mouseout)="onMouseOut()"
+        cdkDragBoundary=".example-boundary"
+        class="example-box"
+        [ngStyle]="{
+          'font-size': textItem.size,
+          color: textItem.color
+        }"
         [style.transform]="
           'translate(' +
           textItem.position.x +
@@ -59,9 +71,7 @@
           textItem.position.y +
           'px)'
         "
-        [ngStyle]="{ 'font-size': textItem.size, color: textItem.color }"
         style="width: 0"
-        cdkDragBoundary=".example-boundary"
       >
         <ng-container *ngIf="!textItem.size; else elseTemplate">
           <h1
@@ -74,7 +84,19 @@
             }"
             style="position: absolute"
           >
-            {{ textItem.text }}
+            <span
+              *ngIf="textItem.hover !== false; else otherText"
+              class="drag-drop-box"
+              >{{ textItem.text }}</span
+            >
+            <ng-template #otherText>
+              <span
+                *ngIf="textItem.increaseSize !== false; else otherSize"
+                class="drag-drop-size"
+                >{{ textItem.text }}</span
+              >
+              <ng-template #otherSize>{{ textItem.text }}</ng-template>
+            </ng-template>
           </h1>
         </ng-container>
 
@@ -89,7 +111,19 @@
                 color: textItem.color ? textItem.color : 'black'
               }"
             >
-              {{ textItem.text }}
+              <span
+                *ngIf="textItem.hover !== false; else otherText"
+                class="drag-drop-box"
+                >{{ textItem.text }}</span
+              >
+              <ng-template #otherText>
+                <span
+                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  class="drag-drop-size"
+                  >{{ textItem.text }}</span
+                >
+                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+              </ng-template>
             </h1>
           </ng-container>
 
@@ -103,9 +137,22 @@
                 color: textItem.color ? textItem.color : 'black'
               }"
             >
-              {{ textItem.text }}
+              <span
+                *ngIf="textItem.hover !== false; else otherText"
+                class="drag-drop-box"
+                >{{ textItem.text }}</span
+              >
+              <ng-template #otherText>
+                <span
+                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  class="drag-drop-size"
+                  >{{ textItem.text }}</span
+                >
+                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+              </ng-template>
             </h2>
           </ng-container>
+
           <ng-container *ngIf="textItem.size === 'h3'">
             <h3
               [ngStyle]="{
@@ -116,9 +163,22 @@
                 color: textItem.color ? textItem.color : 'black'
               }"
             >
-              {{ textItem.text }}
+              <span
+                *ngIf="textItem.hover !== false; else otherText"
+                class="drag-drop-box"
+                >{{ textItem.text }}</span
+              >
+              <ng-template #otherText>
+                <span
+                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  class="drag-drop-size"
+                  >{{ textItem.text }}</span
+                >
+                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+              </ng-template>
             </h3>
           </ng-container>
+
           <ng-container *ngIf="textItem.size === 'h4'">
             <h4
               [ngStyle]="{
@@ -129,9 +189,22 @@
                 color: textItem.color ? textItem.color : 'black'
               }"
             >
-              {{ textItem.text }}
+              <span
+                *ngIf="textItem.hover !== false; else otherText"
+                class="drag-drop-box"
+                >{{ textItem.text }}</span
+              >
+              <ng-template #otherText>
+                <span
+                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  class="drag-drop-size"
+                  >{{ textItem.text }}</span
+                >
+                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+              </ng-template>
             </h4>
           </ng-container>
+
           <ng-container *ngIf="textItem.size === 'h5'">
             <h5
               [ngStyle]="{
@@ -142,7 +215,19 @@
                 color: textItem.color ? textItem.color : 'black'
               }"
             >
-              {{ textItem.text }}
+              <span
+                *ngIf="textItem.hover !== false; else otherText"
+                class="drag-drop-box"
+                >{{ textItem.text }}</span
+              >
+              <ng-template #otherText>
+                <span
+                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  class="drag-drop-size"
+                  >{{ textItem.text }}</span
+                >
+                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+              </ng-template>
             </h5>
           </ng-container>
         </ng-template>
@@ -263,6 +348,45 @@
                 "
                 (click)="ApplyColor('white')"
               ></span>
+            </nz-row>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Color Hover" nzIcon="form">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <nz-row>
+              <button
+                nz-button
+                nzType="primary"
+                *ngIf="editingIndex !== null"
+                (click)="changeHoverColor(editingIndex)"
+                style="
+                  background-color: rgba(0, 21, 41, 0.08);
+                  color: white;
+                  border: none;
+                "
+              >
+                Hover text
+              </button>
+            </nz-row>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <nz-row>
+              <button
+                nz-button
+                nzType="primary"
+                *ngIf="editingIndex !== null"
+                (click)="changeHoverSize(editingIndex)"
+                style="
+                  background-color: rgba(0, 21, 41, 0.08);
+                  color: white;
+                  border: none;
+                "
+              >
+                Zoom
+              </button>
             </nz-row>
           </li>
         </ul>

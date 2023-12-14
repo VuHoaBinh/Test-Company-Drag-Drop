@@ -10,6 +10,8 @@ interface Box {
   size?: string;
   font?: string;
   color?: string;
+  hover?: boolean;
+  increaseSize?: boolean;
 }
 
 @Component({
@@ -30,7 +32,53 @@ export class AppComponent implements OnInit {
   //   font?: string;
   //   color?: string;
   // }[] = [];
+
   boxes: Box[] = [];
+
+  selectedSize: string = 'h1';
+  editingIndex: number | null = null;
+  selectedFont: string = '';
+  hoveredTextItem: Box | null = null;
+
+  constructor(private zone: NgZone) {}
+
+  // hover mouse
+  onMouseOver(textItem: Box): void {
+    this.hoveredTextItem = textItem;
+  }
+
+  onMouseOut(): void {
+    this.hoveredTextItem = null;
+  }
+
+  // get index
+  onDragEnd(event: CdkDragEnd, textItem: Box): void {
+    const draggedItem = event.source.data;
+    const newX = draggedItem.position.x + event.distance.x;
+    const newY = draggedItem.position.y + event.distance.y;
+
+    const minX = 0;
+    const minY = 0;
+    const maxX = 960 - event.source.element.nativeElement.clientWidth;
+    const maxY = 700 - event.source.element.nativeElement.clientHeight;
+
+    if (newX >= minX && newX <= maxX && newY >= minY && newY <= maxY) {
+      draggedItem.position.x = newX;
+      draggedItem.position.y = newY;
+    } else {
+      draggedItem.position.x = Math.max(minX, Math.min(newX, maxX));
+      draggedItem.position.y = Math.max(minY, Math.min(newY, maxY));
+    }
+
+    event.distance.x = 0;
+    event.distance.y = 0;
+    event.dropPoint.x = 0;
+    event.dropPoint.y = 0;
+
+    console.log(draggedItem);
+
+    localStorage.setItem('boxes', JSON.stringify(this.boxes));
+  }
 
   ngOnInit(): void {
     const storedBoxes = localStorage.getItem('boxes');
@@ -39,24 +87,14 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // get index
-  onDragEnd(event: CdkDragEnd): void {
-    console.log(event);
-    const draggedItem = event.source.data;
-    const newPosition = event.source.getFreeDragPosition();
-
-    draggedItem.position = { x: newPosition.x, y: newPosition.y };
-
-    localStorage.setItem('boxes', JSON.stringify(this.boxes));
-  }
-
   // add box
-
   addBox(): void {
     const newBox: Box = {
       id: Date.now(),
       text: 'Drag me!',
       position: { x: 0, y: 0 },
+      hover: false,
+      increaseSize: false,
     };
 
     this.boxes.push(newBox);
@@ -69,17 +107,6 @@ export class AppComponent implements OnInit {
   }
 
   //delete
-  hoveredTextItem: Box | null = null;
-
-  //hover mouse
-  onMouseOver(textItem: Box): void {
-    this.hoveredTextItem = textItem;
-  }
-
-  onMouseOut(): void {
-    this.hoveredTextItem = null;
-  }
-
   deleteHoveredTextItem(index: number): void {
     if (index !== null && index >= 0 && index < this.boxes.length) {
       this.boxes.splice(index, 1);
@@ -89,16 +116,12 @@ export class AppComponent implements OnInit {
   }
 
   //edit
-  editingIndex: number | null = null;
   stopEditing(): void {
     this.editingIndex = null;
     localStorage.setItem('boxes', JSON.stringify(this.boxes));
   }
 
   // set value h1 h2 h3 ...
-  constructor(private zone: NgZone) {}
-  selectedSize: string = 'h1';
-
   applySize(): void {
     if (this.editingIndex !== null) {
       this.boxes[this.editingIndex].size = this.selectedSize;
@@ -107,7 +130,6 @@ export class AppComponent implements OnInit {
   }
 
   // set font
-  selectedFont: string = '';
   applyFont(font: string): void {
     if (this.editingIndex !== null) {
       this.boxes[this.editingIndex].font = font;
@@ -116,11 +138,32 @@ export class AppComponent implements OnInit {
   }
 
   // color
-  selectedColor: string = '';
   ApplyColor(color: string): void {
     if (this.editingIndex !== null) {
       this.boxes[this.editingIndex].color = color;
       localStorage.setItem('boxes', JSON.stringify(this.boxes));
+    }
+  }
+
+  // hover color
+  changeHoverColor(index: number): void {
+    console.log('changeHoverColor', index);
+    if (index !== null && index >= 0 && index < this.boxes.length) {
+      this.boxes[index].hover = !this.boxes[index].hover;
+      this.boxes[index].increaseSize = false;
+      localStorage.setItem('boxes', JSON.stringify(this.boxes));
+      this.editingIndex = null;
+    }
+  }
+
+  // hover increase size
+  changeHoverSize(index: number): void {
+    console.log('changeHoverColor', index);
+    if (index !== null && index >= 0 && index < this.boxes.length) {
+      this.boxes[index].increaseSize = !this.boxes[index].increaseSize;
+      this.boxes[index].hover = false;
+      localStorage.setItem('boxes', JSON.stringify(this.boxes));
+      this.editingIndex = null;
     }
   }
 }

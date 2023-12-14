@@ -73,30 +73,11 @@ nz-content {
   margin: 24px;
 }
 
-
-
-
-
 .example-boundary {
-  width: 960px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
   border: dotted #f90202 2px;
   background-color: rgb(215, 255, 215);
-}
-
-
-.drag-drop-text {
-  position: absolute;
-}
-
-.drag-handle {
-  cursor: grab;
-  user-select: none;
-  display: inline-block;
-  padding: 8px;
-  background-color: lightblue;
-  border: 1px solid #ddd;
-  border-radius: 4px;
 }
 
 .drag-drop-box {
@@ -105,5 +86,28 @@ nz-content {
 }
 
 .drag-drop-box:hover {
-  color: rgb(236, 34, 34); 
+  color: rgb(252, 3, 215); 
+}
+
+.drag-drop-size:hover {
+  font-size: 50px;
+  transition: width 2s;
+}
+
+.example-box {
+  width: 200px;
+  height: 100px;
+  border: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: move;
+  border:none;
+  display: inline-flex;
+  justify-content: center;
+
+  border-radius: 4px;
+  margin-right: 25px;
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  padding: 10px;
 }
