@@ -8,7 +8,11 @@ interface Box {
   position: { x: number; y: number };
   editing?: boolean;
   size?: string;
-  font?: string;
+  font?: {
+    bold?: boolean;
+    italic?: boolean;
+    underline?: boolean;
+  };
   color?: string;
   hover?: boolean;
   increaseSize?: boolean;
@@ -35,7 +39,6 @@ export class AppComponent implements OnInit {
 
   boxes: Box[] = [];
 
-  selectedSize: string = 'h1';
   editingIndex: number | null = null;
   selectedFont: string = '';
   hoveredTextItem: Box | null = null;
@@ -60,7 +63,7 @@ export class AppComponent implements OnInit {
     const minX = 0;
     const minY = 0;
     const maxX = 960 - event.source.element.nativeElement.clientWidth;
-    const maxY = 700 - event.source.element.nativeElement.clientHeight;
+    const maxY = 690 - event.source.element.nativeElement.clientHeight;
 
     if (newX >= minX && newX <= maxX && newY >= minY && newY <= maxY) {
       draggedItem.position.x = newX;
@@ -91,10 +94,16 @@ export class AppComponent implements OnInit {
   addBox(): void {
     const newBox: Box = {
       id: Date.now(),
-      text: 'Drag me!',
+      text: 'Text',
       position: { x: 0, y: 0 },
+      size: 'h1',
       hover: false,
       increaseSize: false,
+      font: {
+        bold: false,
+        italic: false,
+        underline: false,
+      },
     };
 
     this.boxes.push(newBox);
@@ -122,17 +131,30 @@ export class AppComponent implements OnInit {
   }
 
   // set value h1 h2 h3 ...
+  selectedSize: string = 'h1';
   applySize(): void {
     if (this.editingIndex !== null) {
       this.boxes[this.editingIndex].size = this.selectedSize;
+      console.log('haha: ', this.selectedSize);
       localStorage.setItem('boxes', JSON.stringify(this.boxes));
     }
   }
 
   // set font
   applyFont(font: string): void {
-    if (this.editingIndex !== null) {
-      this.boxes[this.editingIndex].font = font;
+    if (this.editingIndex !== null && this.boxes[this.editingIndex]?.font) {
+      const fontStyles = this.boxes[this.editingIndex].font;
+
+      if (font === 'bold' && fontStyles) {
+        fontStyles.bold = !fontStyles.bold;
+      }
+      if (font === 'italic' && fontStyles) {
+        fontStyles.italic = !fontStyles.italic;
+      }
+      if (font === 'underline' && fontStyles) {
+        fontStyles.underline = !fontStyles.underline;
+      }
+
       localStorage.setItem('boxes', JSON.stringify(this.boxes));
     }
   }

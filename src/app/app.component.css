@@ -73,14 +73,11 @@ nz-content {
   margin: 24px;
 }
 
-.example-boundary {
-  width: 100%;
-  height: 100%;
-  border: dotted #f90202 2px;
-  background-color: rgb(215, 255, 215);
-}
 
-.drag-drop-box {
+
+
+
+.drag-drop-box .drag-drop-size {
   cursor: move;
   transition: background-color 0.3s ease; 
 }
@@ -92,22 +89,35 @@ nz-content {
 .drag-drop-size:hover {
   font-size: 50px;
   transition: width 2s;
+  
+}
+
+.example-boundary {
+  width: 960px;
+  height: 600px;
+  border: dotted #f90202 2px;
+  background-color: rgb(215, 255, 215);
+  position: relative;
 }
 
 .example-box {
-  width: 200px;
-  height: 100px;
   border: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   cursor: move;
   border:none;
   display: inline-flex;
   justify-content: center;
-
+  
   border-radius: 4px;
-  margin-right: 25px;
+  margin-right: 50px;
   position: absolute;
   z-index: 1;
   box-sizing: border-box;
-  padding: 10px;
+  height: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+}
+.example-box, .example-boundary {
+  transform: translate3d(0, 0, 0);
 }

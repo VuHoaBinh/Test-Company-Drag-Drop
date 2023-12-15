@@ -50,6 +50,7 @@
   </nz-sider>
   <nz-layout>
     <nz-content class="example-boundary">
+      <!-- cdkDragBoundary=".example-boundary" -->
       <div
         cdkDrag
         *ngFor="let textItem of boxes; let i = index"
@@ -61,41 +62,40 @@
         cdkDragBoundary=".example-boundary"
         class="example-box"
         [ngStyle]="{
-          'font-size': textItem.size,
-          color: textItem.color
+          'font-size': textItem?.size,
+          color: textItem?.color
         }"
         [style.transform]="
           'translate(' +
-          textItem.position.x +
+          (textItem?.position?.x || 0) +
           'px, ' +
-          textItem.position.y +
+          (textItem?.position?.y || 0) +
           'px)'
         "
-        style="width: 0"
       >
-        <ng-container *ngIf="!textItem.size; else elseTemplate">
+        <ng-container *ngIf="!textItem?.size; else elseTemplate">
           <h1
             [ngStyle]="{
-              'font-weight': textItem.font === 'bold' ? 'bold' : 'normal',
-              'font-style': textItem.font === 'italic' ? 'italic' : 'normal',
-              'text-decoration':
-                textItem.font === 'underline' ? 'underline' : 'none',
-              color: textItem.color ? textItem.color : 'black'
+              'font-weight': textItem?.font?.bold ? 'bold' : 'normal',
+              'font-style': textItem?.font?.italic ? 'italic' : 'normal',
+              'text-decoration': textItem?.font?.underline
+                ? 'underline'
+                : 'none',
+              color: textItem?.color ? textItem.color : 'black'
             }"
-            style="position: absolute"
           >
             <span
-              *ngIf="textItem.hover !== false; else otherText"
+              *ngIf="textItem?.hover !== false; else otherText"
               class="drag-drop-box"
-              >{{ textItem.text }}</span
+              >{{ textItem?.text }}</span
             >
             <ng-template #otherText>
               <span
-                *ngIf="textItem.increaseSize !== false; else otherSize"
+                *ngIf="textItem?.increaseSize !== false; else otherSize"
                 class="drag-drop-size"
-                >{{ textItem.text }}</span
+                >{{ textItem?.text }}</span
               >
-              <ng-template #otherSize>{{ textItem.text }}</ng-template>
+              <ng-template #otherSize>{{ textItem?.text }}</ng-template>
             </ng-template>
           </h1>
         </ng-container>
@@ -104,25 +104,26 @@
           <ng-container *ngIf="textItem.size === 'h1'">
             <h1
               [ngStyle]="{
-                'font-weight': textItem.font === 'bold' ? 'bold' : 'normal',
-                'font-style': textItem.font === 'italic' ? 'italic' : 'normal',
-                'text-decoration':
-                  textItem.font === 'underline' ? 'underline' : 'none',
-                color: textItem.color ? textItem.color : 'black'
+                'font-weight': textItem?.font?.bold ? 'bold' : 'normal',
+                'font-style': textItem?.font?.italic ? 'italic' : 'normal',
+                'text-decoration': textItem?.font?.underline
+                  ? 'underline'
+                  : 'none',
+                color: textItem?.color ? textItem.color : 'black'
               }"
             >
               <span
-                *ngIf="textItem.hover !== false; else otherText"
+                *ngIf="textItem?.hover !== false; else otherText"
                 class="drag-drop-box"
-                >{{ textItem.text }}</span
+                >{{ textItem?.text }}</span
               >
               <ng-template #otherText>
                 <span
-                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  *ngIf="textItem?.increaseSize !== false; else otherSize"
                   class="drag-drop-size"
-                  >{{ textItem.text }}</span
+                  >{{ textItem?.text }}</span
                 >
-                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+                <ng-template #otherSize>{{ textItem?.text }}</ng-template>
               </ng-template>
             </h1>
           </ng-container>
@@ -130,25 +131,26 @@
           <ng-container *ngIf="textItem.size === 'h2'">
             <h2
               [ngStyle]="{
-                'font-weight': textItem.font === 'bold' ? 'bold' : 'normal',
-                'font-style': textItem.font === 'italic' ? 'italic' : 'normal',
-                'text-decoration':
-                  textItem.font === 'underline' ? 'underline' : 'none',
-                color: textItem.color ? textItem.color : 'black'
+                'font-weight': textItem?.font?.bold ? 'bold' : 'normal',
+                'font-style': textItem?.font?.italic ? 'italic' : 'normal',
+                'text-decoration': textItem?.font?.underline
+                  ? 'underline'
+                  : 'none',
+                color: textItem?.color ? textItem.color : 'black'
               }"
             >
               <span
-                *ngIf="textItem.hover !== false; else otherText"
+                *ngIf="textItem?.hover !== false; else otherText"
                 class="drag-drop-box"
-                >{{ textItem.text }}</span
+                >{{ textItem?.text }}</span
               >
               <ng-template #otherText>
                 <span
-                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  *ngIf="textItem?.increaseSize !== false; else otherSize"
                   class="drag-drop-size"
-                  >{{ textItem.text }}</span
+                  >{{ textItem?.text }}</span
                 >
-                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+                <ng-template #otherSize>{{ textItem?.text }}</ng-template>
               </ng-template>
             </h2>
           </ng-container>
@@ -156,25 +158,26 @@
           <ng-container *ngIf="textItem.size === 'h3'">
             <h3
               [ngStyle]="{
-                'font-weight': textItem.font === 'bold' ? 'bold' : 'normal',
-                'font-style': textItem.font === 'italic' ? 'italic' : 'normal',
-                'text-decoration':
-                  textItem.font === 'underline' ? 'underline' : 'none',
-                color: textItem.color ? textItem.color : 'black'
+                'font-weight': textItem?.font?.bold ? 'bold' : 'normal',
+                'font-style': textItem?.font?.italic ? 'italic' : 'normal',
+                'text-decoration': textItem?.font?.underline
+                  ? 'underline'
+                  : 'none',
+                color: textItem?.color ? textItem.color : 'black'
               }"
             >
               <span
-                *ngIf="textItem.hover !== false; else otherText"
+                *ngIf="textItem?.hover !== false; else otherText"
                 class="drag-drop-box"
-                >{{ textItem.text }}</span
+                >{{ textItem?.text }}</span
               >
               <ng-template #otherText>
                 <span
-                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  *ngIf="textItem?.increaseSize !== false; else otherSize"
                   class="drag-drop-size"
-                  >{{ textItem.text }}</span
+                  >{{ textItem?.text }}</span
                 >
-                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+                <ng-template #otherSize>{{ textItem?.text }}</ng-template>
               </ng-template>
             </h3>
           </ng-container>
@@ -182,25 +185,26 @@
           <ng-container *ngIf="textItem.size === 'h4'">
             <h4
               [ngStyle]="{
-                'font-weight': textItem.font === 'bold' ? 'bold' : 'normal',
-                'font-style': textItem.font === 'italic' ? 'italic' : 'normal',
-                'text-decoration':
-                  textItem.font === 'underline' ? 'underline' : 'none',
-                color: textItem.color ? textItem.color : 'black'
+                'font-weight': textItem?.font?.bold ? 'bold' : 'normal',
+                'font-style': textItem?.font?.italic ? 'italic' : 'normal',
+                'text-decoration': textItem?.font?.underline
+                  ? 'underline'
+                  : 'none',
+                color: textItem?.color ? textItem.color : 'black'
               }"
             >
               <span
-                *ngIf="textItem.hover !== false; else otherText"
+                *ngIf="textItem?.hover !== false; else otherText"
                 class="drag-drop-box"
-                >{{ textItem.text }}</span
+                >{{ textItem?.text }}</span
               >
               <ng-template #otherText>
                 <span
-                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  *ngIf="textItem?.increaseSize !== false; else otherSize"
                   class="drag-drop-size"
-                  >{{ textItem.text }}</span
+                  >{{ textItem?.text }}</span
                 >
-                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+                <ng-template #otherSize>{{ textItem?.text }}</ng-template>
               </ng-template>
             </h4>
           </ng-container>
@@ -208,25 +212,26 @@
           <ng-container *ngIf="textItem.size === 'h5'">
             <h5
               [ngStyle]="{
-                'font-weight': textItem.font === 'bold' ? 'bold' : 'normal',
-                'font-style': textItem.font === 'italic' ? 'italic' : 'normal',
-                'text-decoration':
-                  textItem.font === 'underline' ? 'underline' : 'none',
-                color: textItem.color ? textItem.color : 'black'
+                'font-weight': textItem?.font?.bold ? 'bold' : 'normal',
+                'font-style': textItem?.font?.italic ? 'italic' : 'normal',
+                'text-decoration': textItem?.font?.underline
+                  ? 'underline'
+                  : 'none',
+                color: textItem?.color ? textItem.color : 'black'
               }"
             >
               <span
-                *ngIf="textItem.hover !== false; else otherText"
+                *ngIf="textItem?.hover !== false; else otherText"
                 class="drag-drop-box"
-                >{{ textItem.text }}</span
+                >{{ textItem?.text }}</span
               >
               <ng-template #otherText>
                 <span
-                  *ngIf="textItem.increaseSize !== false; else otherSize"
+                  *ngIf="textItem?.increaseSize !== false; else otherSize"
                   class="drag-drop-size"
-                  >{{ textItem.text }}</span
+                  >{{ textItem?.text }}</span
                 >
-                <ng-template #otherSize>{{ textItem.text }}</ng-template>
+                <ng-template #otherSize>{{ textItem?.text }}</ng-template>
               </ng-template>
             </h5>
           </ng-container>
@@ -272,19 +277,59 @@
       </li>
       <li nz-submenu nzOpen nzTitle="Font text" nzIcon="form">
         <ul>
-          <li nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter *ngIf="editingIndex !== null">
             <nz-select
               nzShowSearch
               nzAllowClear
-              nzPlaceHolder="Select Size"
               [(ngModel)]="selectedSize"
+              [(ngModel)]="boxes[editingIndex].size"
+              nzPlaceHolder="Select Size"
               (ngModelChange)="applySize()"
             >
-              <nz-option nzLabel="Heading 1" [nzValue]="'h1'"></nz-option>
-              <nz-option nzLabel="Heading 2" [nzValue]="'h2'"></nz-option>
-              <nz-option nzLabel="Heading 3" [nzValue]="'h3'"></nz-option>
-              <nz-option nzLabel="Heading 4" [nzValue]="'h4'"></nz-option>
-              <nz-option nzLabel="Heading 5" [nzValue]="'h5'"></nz-option>
+              <ng-container [ngSwitch]="boxes[editingIndex]?.size">
+                <ng-container *ngSwitchCase="'h1'">
+                  <nz-option nzLabel="Heading 1" [nzValue]="'h1'"></nz-option>
+                  <nz-option nzLabel="Heading 2" [nzValue]="'h2'"></nz-option>
+                  <nz-option nzLabel="Heading 3" [nzValue]="'h3'"></nz-option>
+                  <nz-option nzLabel="Heading 4" [nzValue]="'h4'"></nz-option>
+                  <nz-option nzLabel="Heading 5" [nzValue]="'h5'"></nz-option>
+                </ng-container>
+                <ng-container *ngSwitchCase="'h2'">
+                  <nz-option nzLabel="Heading 2" [nzValue]="'h2'"></nz-option>
+                  <nz-option nzLabel="Heading 1" [nzValue]="'h1'"></nz-option>
+                  <nz-option nzLabel="Heading 3" [nzValue]="'h3'"></nz-option>
+                  <nz-option nzLabel="Heading 4" [nzValue]="'h4'"></nz-option>
+                  <nz-option nzLabel="Heading 5" [nzValue]="'h5'"></nz-option>
+                </ng-container>
+                <ng-container *ngSwitchCase="'h3'">
+                  <nz-option nzLabel="Heading 3" [nzValue]="'h3'"></nz-option>
+                  <nz-option nzLabel="Heading 1" [nzValue]="'h1'"></nz-option>
+                  <nz-option nzLabel="Heading 2" [nzValue]="'h2'"></nz-option>
+                  <nz-option nzLabel="Heading 4" [nzValue]="'h4'"></nz-option>
+                  <nz-option nzLabel="Heading 5" [nzValue]="'h5'"></nz-option>
+                </ng-container>
+                <ng-container *ngSwitchCase="'h4'">
+                  <nz-option nzLabel="Heading 4" [nzValue]="'h4'"></nz-option>
+                  <nz-option nzLabel="Heading 1" [nzValue]="'h1'"></nz-option>
+                  <nz-option nzLabel="Heading 2" [nzValue]="'h2'"></nz-option>
+                  <nz-option nzLabel="Heading 3" [nzValue]="'h3'"></nz-option>
+                  <nz-option nzLabel="Heading 5" [nzValue]="'h5'"></nz-option>
+                </ng-container>
+                <ng-container *ngSwitchCase="'h5'">
+                  <nz-option nzLabel="Heading 5" [nzValue]="'h5'"></nz-option>
+                  <nz-option nzLabel="Heading 1" [nzValue]="'h1'"></nz-option>
+                  <nz-option nzLabel="Heading 2" [nzValue]="'h2'"></nz-option>
+                  <nz-option nzLabel="Heading 3" [nzValue]="'h3'"></nz-option>
+                  <nz-option nzLabel="Heading 4" [nzValue]="'h4'"></nz-option>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <nz-option nzLabel="Heading 1" [nzValue]="'h1'"></nz-option>
+                  <nz-option nzLabel="Heading 2" [nzValue]="'h2'"></nz-option>
+                  <nz-option nzLabel="Heading 3" [nzValue]="'h3'"></nz-option>
+                  <nz-option nzLabel="Heading 4" [nzValue]="'h4'"></nz-option>
+                  <nz-option nzLabel="Heading 5" [nzValue]="'h5'"></nz-option>
+                </ng-container>
+              </ng-container>
             </nz-select>
           </li>
 
